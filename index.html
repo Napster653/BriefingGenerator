@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Briefing Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body class="bg-dark text-light">
+    <div class="container-fluid h-100">
+        <div class="row p-3">
+            <div class="col-6">
+                <form>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label for="mission_name" class="form-label">Nombre de la misión (como en el pbo)</label>
+                            <input type="text" class="form-control" id="mission_name" placeholder="CO@XXHCX_NOMBRE_DE_LA_MISIÓN">
+                        </div>
+                        <div class="col-4">
+                            <label for="mission_map" class="form-label">Mapa</label>
+                            <input type="text" class="form-control" id="mission_map" placeholder="Altis">
+                        </div>
+                        <div class="col-4">
+                            <label for="mission_type" class="form-label">Tipo de misión</label>
+                            <select class="form-select" id="mission_type" aria-label="Default select example">
+                                <option value="martes" selected>Martes</option>
+                                <option value="viernes">Viernes</option>
+                                <option value="academia">Academia</option>
+                                <option value="maniobra">Maniobra</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label for="mission_pretty_name" class="form-label">Nombre de la misión (Bien escrito)</label>
+                            <input type="text" class="form-control" id="mission_pretty_name" placeholder="Nombre de la Misión">
+                        </div>
+                        <div class="col-4">
+                            <label for="mission_image" class="form-label">URL de la imagen para la misión</label>
+                            <input type="text" class="form-control" id="mission_image" placeholder="Enlace a imgur">
+                        </div>
+                        <div class="col-4">
+                            <label for="mission_hcs" class="form-label">Número de HCs</label>
+                            <input type="number" class="form-control" id="mission_hcs" placeholder="3">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="mission_situation_bold" class="form-label">Localización y fecha</label>
+                            <input type="text" class="form-control mb-2" id="mission_situation_bold" placeholder="Murcia, 2005">
+                            <label for="mission_situation" class="form-label">Situación</label>
+                            <textarea class="form-control mb-2" id="mission_situation" placeholder="La ideología prorrusa se expande..."></textarea>
+                            <label for="mission_mission" class="form-label">Misión</label>
+                            <textarea class="form-control mb-2" id="mission_mission" placeholder="Lo que hay que hacer"></textarea>
+                            <label for="mission_hostiles" class="form-label">Fuerza Hostil</label>
+                            <textarea class="form-control mb-2" id="mission_hostiles" placeholder="Los malos"></textarea>
+                            <label for="mission_allies" class="form-label">Soporte y medios</label>
+                            <textarea class="form-control mb-2" id="mission_allies" placeholder="1x UH-60..."></textarea>
+                            <label for="mission_weather" class="form-label">Clima</label>
+                            <textarea class="form-control mb-2" id="mission_weather" placeholder="A lo mejor te interesa poner cuándo amanece/anochece"></textarea>
+                            <label for="mission_ace" class="form-label">ACE</label>
+                            <textarea class="form-control mb-2" id="mission_ace" placeholder="Sistema médico, etc"></textarea>
+                            <label for="mission_notes" class="form-label">Notas del Editor</label>
+                            <textarea class="form-control mb-2" id="mission_notes" placeholder="Cualquier nota"></textarea>
+                            <label for="mission_radio_long" class="form-label">Canales de radio (Globales)</label>
+                            <textarea class="form-control mb-2" id="mission_radio_long" placeholder="Global: (Ch1-AN/PRC-152)"></textarea>
+                            <label for="mission_radio_short" class="form-label">Canales de radio (Globales)</label>
+                            <textarea class="form-control mb-2" id="mission_radio_short" placeholder="ALPHA 1-1: Ch1 (AN/PRC-343)"></textarea>
+                            <p>Si quieres añadir más párrafos, los puedes poner a mano. Soy una plantilla, no un policía.</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="mission_jip" checked>
+                                <label class="form-check-label" for="mission_jip">JIP</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="mission_respawn" checked>
+                                <label class="form-check-label" for="mission_respawn">Respawn</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="mission_ocap" checked>
+                                <label class="form-check-label" for="mission_ocap">OCAP</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-5 row align-items-center mx-auto">
+                            <label for="mission_total_slots" class="form-label">Número total de slots</label>
+                            <input type="number" class="form-control mb-2" id="mission_total_slots" placeholder="27">
+                        </div>
+                        <div class="col-5 row align-items-center mx-auto">
+                            <label for="mission_unit_name" class="form-label">Nombre de la unidad</label>
+                            <input type="text" class="form-control mb-2" id="mission_unit_name" placeholder="Marines espaciales">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="mission_orbat" class="form-label">ORBAT (Deja una línea en blanco entre patrullas) (No metas BBCode aquí)</label>
+                            <textarea class="form-control mb-2" id="mission_orbat" rows="5" placeholder="ALPHA 1-1
+Líder (A11)-
+Fusilero (A11)-
+..."></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="mission_addons" class="form-label">Addons</label>
+                            <textarea class="form-control mb-2" id="mission_addons" rows="5" placeholder="@ace
+@ace_complementos
+@acre2
+..."></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="mission_gop_notes" class="form-label">Notas para GOP</label>
+                            <textarea class="form-control" id="mission_gop_notes" placeholder="Levantar con X mod en server"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-6">
+                <textarea class="form-control" id="output" rows="20"></textarea>
+                <br>
+                <button type="button" id="generate" class="btn btn-primary">Generar y copiar al portapapeles</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>
