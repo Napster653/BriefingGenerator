@@ -60,7 +60,7 @@ document.getElementById('generate').addEventListener('click', function ()
     if (mission_respawn)
         output += '\n\n';
     else
-        output += ':norespawn\n\n';
+        output += ':norespawn:\n\n';
     output += `[color=#FFFF40][b]${mission_unit_name}[/b][/color]\n\n`;
     let lines = mission_orbat.split('\n');
     let emptyLineMarker = true;
