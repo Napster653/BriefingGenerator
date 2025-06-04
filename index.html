@@ -15,7 +15,7 @@
     <div class="container-fluid h-100">
         <div class="row p-3">
             <div class="col-6">
-                <h1 class="text-center">Squad ALPHA Briefing Generator</h1>
+                <h1 class="text-center">Squad ALPHA Briefing Generator <span class="badge text-bg-warning">EN MANTENIMIENTO</span></h1>
                 <form>
                     <div class="row mb-2">
                         <div class="col-4">
@@ -27,14 +27,31 @@
                             <input type="text" class="form-control" id="mission_map" placeholder="" disabled>
                         </div>
                         <div class="col-4">
-                            <label for="mission_type" class="form-label">Tipo de misión</label>
-                            <select class="form-select" id="mission_type" aria-label="Default select example">
-                                <option value="martes" selected>Martes</option>
-                                <option value="viernes">Viernes</option>
-                                <option value="viernes">Sábado</option>
-                                <option value="academia">Academia</option>
-                                <option value="maniobra">Maniobra</option>
-                            </select>
+                            <label class="form-label">Tipo de misión</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="mission_type_martes" value="martes">
+                                <label class="form-check-label" for="mission_type_martes">Martes</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="mission_type_viernes" value="viernes">
+                                <label class="form-check-label" for="mission_type_viernes">Viernes</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="mission_type_sabado" value="sabado">
+                                <label class="form-check-label" for="mission_type_sabado">Sábado</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="mission_type_campana" value="campana">
+                                <label class="form-check-label" for="mission_type_campana">Campaña</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="mission_type_academia" value="academia">
+                                <label class="form-check-label" for="mission_type_academia">Academia</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="mission_type_maniobra" value="maniobra">
+                                <label class="form-check-label" for="mission_type_maniobra">Maniobra</label>
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -110,19 +127,13 @@
                     <div class="row">
                         <div class="col-12">
                             <label for="mission_orbat" class="form-label">ORBAT (Deja una línea en blanco entre patrullas) (No metas BBCode aquí)</label>
-                            <textarea class="form-control mb-2" id="mission_orbat" rows="5" placeholder="ALPHA 1-1
-Líder (A11)-
-Fusilero (A11)-
-..."></textarea>
+                            <textarea class="form-control mb-2" id="mission_orbat" rows="5" placeholder="ALPHA 1-1&#10;Líder (A11)-&#10;Fusilero (A11)-&#10;..."></textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <label for="mission_addons" class="form-label">Addons</label>
-                            <textarea class="form-control mb-2" id="mission_addons" rows="5" placeholder="@ace
-@ace_complementos
-@acre2
-..."></textarea>
+                            <textarea class="form-control mb-2" id="mission_addons" rows="5" placeholder="@ace&#10;@ace_complementos&#10;@acre2&#10;..."></textarea>
                         </div>
                     </div>
                     <div class="row">
