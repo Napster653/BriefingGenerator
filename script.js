@@ -108,3 +108,13 @@ document.getElementById('generate').addEventListener('click', function ()
 
     document.getElementById('output').value = output
 });
+
+document.getElementById('mission_name').addEventListener('input', function (event)
+{
+    const missionName = event.target.value;
+    const parts = missionName.split('.');
+    if (parts.length === 3)
+    {
+        document.getElementById('mission_map').value = parts[1].trim();
+    }
+});
