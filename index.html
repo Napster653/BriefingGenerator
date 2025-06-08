@@ -14,107 +14,223 @@
 <body class="bg-dark text-light">
     <div class="container-fluid h-100">
         <div class="row p-3">
-            <div class="col-6">
-                <h1 class="text-center">Squad ALPHA Briefing Generator <span class="badge text-bg-warning">EN MANTENIMIENTO</span></h1>
+            <h1 class="text-center">SQA Briefing Generator <span class="badge text-bg-warning">EN MANTENIMIENTO</span></h1>
+        </div>
+        <div class="row p-3">
+            <div class="col-8 mx-auto">
                 <form>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <label for="mission_name" class="form-label">Nombre del pbo (xxx.yyy.pbo)</label>
-                            <input type="text" class="form-control" id="mission_name" placeholder="CO@XXHCX_NOMBRE_DE_LA_MISIÓN.pbo">
-                        </div>
-                        <div class="col-4">
-                            <label for="mission_map" class="form-label">Mapa</label>
-                            <input type="text" class="form-control" id="mission_map" placeholder="" disabled>
-                        </div>
-                        <div class="col-4">
-                            <label class="form-label">Tipo de misión</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="mission_type_martes" value="martes">
-                                <label class="form-check-label" for="mission_type_martes">Martes</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="mission_type_viernes" value="viernes">
-                                <label class="form-check-label" for="mission_type_viernes">Viernes</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="mission_type_sabado" value="sabado">
-                                <label class="form-check-label" for="mission_type_sabado">Sábado</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="mission_type_campana" value="campana">
-                                <label class="form-check-label" for="mission_type_campana">Campaña</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="mission_type_academia" value="academia">
-                                <label class="form-check-label" for="mission_type_academia">Academia</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="mission_type_maniobra" value="maniobra">
-                                <label class="form-check-label" for="mission_type_maniobra">Maniobra</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <label for="mission_pretty_name" class="form-label">Nombre de la misión (Bien escrito)</label>
-                            <input type="text" class="form-control" id="mission_pretty_name" placeholder="Nombre de la Misión">
-                        </div>
-                        <div class="col-4">
-                            <label for="mission_image" class="form-label">URL de la imagen para la misión</label>
-                            <input type="text" class="form-control" id="mission_image" placeholder="Enlace a imgur">
-                        </div>
-                        <div class="col-4">
-                            <label for="mission_hcs" class="form-label">Número de HCs</label>
-                            <input type="number" class="form-control" id="mission_hcs" placeholder="3">
-                        </div>
-                    </div>
-                    <div class="row">
+                    <div class="row py-3">
                         <div class="col-12">
-                            <label for="mission_situation_bold" class="form-label">Localización y fecha</label>
-                            <input type="text" class="form-control mb-2" id="mission_situation_bold" placeholder="Murcia, 2005">
-                            <label for="mission_situation" class="form-label">Situación</label>
-                            <textarea class="form-control mb-2" id="mission_situation" placeholder="La ideología prorrusa se expande..."></textarea>
-                            <label for="mission_mission" class="form-label">Misión</label>
-                            <textarea class="form-control mb-2" id="mission_mission" placeholder="Lo que hay que hacer"></textarea>
-                            <label for="mission_hostiles" class="form-label">Fuerza Hostil</label>
-                            <textarea class="form-control mb-2" id="mission_hostiles" placeholder="Los malos"></textarea>
-                            <label for="mission_allies" class="form-label">Soporte y medios</label>
-                            <textarea class="form-control mb-2" id="mission_allies" placeholder="1x UH-60..."></textarea>
-                            <label for="mission_weather" class="form-label">Clima</label>
-                            <textarea class="form-control mb-2" id="mission_weather" placeholder="A lo mejor te interesa poner cuándo amanece/anochece"></textarea>
-                            <label for="mission_ace" class="form-label">ACE</label>
-                            <textarea class="form-control mb-2" id="mission_ace" placeholder="Sistema médico, etc"></textarea>
-                            <label for="mission_notes" class="form-label">Notas del Editor</label>
-                            <textarea class="form-control mb-2" id="mission_notes" placeholder="Cualquier nota"></textarea>
+                            <h3>Importar BBCode (Opcional)</h3>
+                        </div>
+                        <div class="col-12">
+                            <label for="bbcode_input" class="form-label">Pega aquí el BBCode de una misión ya creada para hacer modificaciones</label>
+                            <textarea class="form-control" id="bbcode_input" rows="5" placeholder="[b]Nombre de la misión[/b]"></textarea>
+                            <br>
+                            <button type="button" id="generate" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-90deg-left" viewBox="0 0 16 16" style="transform: scaleY(-1);">
+                                    <path fill-rule="evenodd" d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708z" />
+                                </svg>
+                                Procesar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row py-3 border-top">
+                        <div class="col-12">
+                            <h3>Metadatos</h3>
+                        </div>
+                        <div class="col-6">
+                            <label for="mission_name" class="form-label">Nombre del .pbo</label>
+                            <input type="text" class="form-control" id="mission_name" placeholder="nombre.mapa.pbo">
+                            <br>
+                            <label for="mission_map" class="form-label">Mapa (Autocompletado)</label>
+                            <input type="text" class="form-control" id="mission_map" placeholder="" disabled>
+                            <br>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Tipo de misión (marca todas las que apliquen)</label>
+                            <div class="row mx-auto">
+                                <div class="col-4 mx-auto">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="mission_type_martes" value="martes">
+                                        <label class="form-check-label" for="mission_type_martes">Martes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="mission_type_viernes" value="viernes">
+                                        <label class="form-check-label" for="mission_type_viernes">Viernes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="mission_type_sabado" value="sabado">
+                                        <label class="form-check-label" for="mission_type_sabado">Sábado</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="mission_type_sabado" value="sabado">
+                                        <label class="form-check-label" for="mission_type_sabado">Respawn</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="mission_type_sabado" value="sabado">
+                                        <label class="form-check-label" for="mission_type_sabado">JIP</label>
+                                    </div>
+                                </div>
+                                <div class="col-4 mx-auto">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="mission_type_campana" value="campana">
+                                        <label class="form-check-label" for="mission_type_campana">Campaña</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="mission_type_academia" value="academia">
+                                        <label class="form-check-label" for="mission_type_academia">Academia</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="mission_type_maniobra" value="maniobra">
+                                        <label class="form-check-label" for="mission_type_maniobra">Maniobra</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="mission_type_sabado" value="sabado">
+                                        <label class="form-check-label" for="mission_type_sabado">OCAP</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="mission_pretty_name" class="form-label">Nombre de la misión (en mayúsculas)</label>
+                                    <input type="text" class="form-control" id="mission_pretty_name" placeholder="Nombre de la Misión" style="text-transform:uppercase">
+                                </div>
+                                <div class="col-6">
+                                    <label for="mission_image" class="form-label">URL de la imagen para la misión</label>
+                                    <input type="text" class="form-control" id="mission_image" placeholder="https://...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row py-3 border-top">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-9">
+                                    <h3>Briefing</h3>
+                                </div>
+                                <div class="col-3 text-end">
+                                    <button class="btn btn-success" type="button" id="add_section_button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                        </svg>
+                                        Añadir sección
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row" id="briefing_sections">
+                                <div class="col-12 my-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="border-bottom-left-radius: 0;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-horizontal" viewBox="0 0 16 16">
+                                                <path d="M2 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" class="form-control" value="Situación">
+                                        <button class="btn btn-danger delete-button" type="button" style="border-bottom-right-radius: 0;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <textarea class="form-control" rows="3" style="border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;"></textarea>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="border-bottom-left-radius: 0;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-horizontal" viewBox="0 0 16 16">
+                                                <path d="M2 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" class="form-control" value="Misión">
+                                        <button class="btn btn-danger delete-button" type="button" style="border-bottom-right-radius: 0;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <textarea class="form-control" rows="3" style="border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;"></textarea>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="border-bottom-left-radius: 0;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-horizontal" viewBox="0 0 16 16">
+                                                <path d="M2 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" class="form-control" value="Soporte y medios">
+                                        <button class="btn btn-danger delete-button" type="button" style="border-bottom-right-radius: 0;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <textarea class="form-control" rows="3" style="border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;"></textarea>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="border-bottom-left-radius: 0;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-horizontal" viewBox="0 0 16 16">
+                                                <path d="M2 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" class="form-control" value="Fuerza hostil">
+                                        <button class="btn btn-danger delete-button" type="button" style="border-bottom-right-radius: 0;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <textarea class="form-control" rows="3" style="border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;"></textarea>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="border-bottom-left-radius: 0;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-horizontal" viewBox="0 0 16 16">
+                                                <path d="M2 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" class="form-control" value="Clima">
+                                        <button class="btn btn-danger delete-button" type="button" style="border-bottom-right-radius: 0;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <textarea class="form-control" rows="3" style="border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;"></textarea>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="border-bottom-left-radius: 0;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-horizontal" viewBox="0 0 16 16">
+                                                <path d="M2 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" class="form-control" value="Notas del editor">
+                                        <button class="btn btn-danger delete-button" type="button" style="border-bottom-right-radius: 0;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <textarea class="form-control" rows="3" style="border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row py-3 border-top">
+                        <div class="col-12">
                             <label for="mission_radio_long" class="form-label">Canales de radio (Globales)</label>
                             <textarea class="form-control mb-2" id="mission_radio_long" placeholder="Global: (Ch1-AN/PRC-152)"></textarea>
                             <label for="mission_radio_short" class="form-label">Canales de radio (Globales)</label>
                             <textarea class="form-control mb-2" id="mission_radio_short" placeholder="ALPHA 1-1: Ch1 (AN/PRC-343)"></textarea>
-                            <p>Si quieres añadir más párrafos, los puedes poner a mano. Soy una plantilla, no un policía.</p>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-4">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="mission_jip" checked>
-                                <label class="form-check-label" for="mission_jip">JIP</label>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="mission_respawn" checked>
-                                <label class="form-check-label" for="mission_respawn">Respawn</label>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="mission_ocap" checked>
-                                <label class="form-check-label" for="mission_ocap">OCAP</label>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="row">
+                    <div class="row py-3 border-top">
                         <div class="col-5 row align-items-center mx-auto">
                             <label for="mission_total_slots" class="form-label">Número total de slots</label>
                             <input type="number" class="form-control mb-2" id="mission_total_slots" placeholder="27">
@@ -124,30 +240,38 @@
                             <input type="text" class="form-control mb-2" id="mission_unit_name" placeholder="Marines espaciales">
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row py-3 border-top">
                         <div class="col-12">
                             <label for="mission_orbat" class="form-label">ORBAT (Deja una línea en blanco entre patrullas) (No metas BBCode aquí)</label>
                             <textarea class="form-control mb-2" id="mission_orbat" rows="5" placeholder="ALPHA 1-1&#10;Líder (A11)-&#10;Fusilero (A11)-&#10;..."></textarea>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row py-3 border-top">
                         <div class="col-12">
                             <label for="mission_addons" class="form-label">Addons</label>
                             <textarea class="form-control mb-2" id="mission_addons" rows="5" placeholder="@ace&#10;@ace_complementos&#10;@acre2&#10;..."></textarea>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row py-3 border-top">
                         <div class="col-12">
                             <label for="mission_gop_notes" class="form-label">Notas para GOP</label>
                             <textarea class="form-control" id="mission_gop_notes" placeholder="Levantar con X mod en server"></textarea>
                         </div>
                     </div>
+                    <div class="row py-3 border-top">
+                        <div class="col-12">
+                            <h2>BBCode de salida</h2>
+                            <textarea class="form-control" id="output" rows="10"></textarea>
+                            <br>
+                            <button type="button" id="generate" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-90deg-up" viewBox="0 0 16 16" style="transform: scaleX(-1);">
+                                    <path fill-rule="evenodd" d="M4.854 1.146a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L4 2.707V12.5A2.5 2.5 0 0 0 6.5 15h8a.5.5 0 0 0 0-1h-8A1.5 1.5 0 0 1 5 12.5V2.707l3.146 3.147a.5.5 0 1 0 .708-.708z" />
+                                </svg>
+                                Generar
+                            </button>
+                        </div>
+                    </div>
                 </form>
-            </div>
-            <div class="col-6">
-                <textarea class="form-control" id="output" rows="20"></textarea>
-                <br>
-                <button type="button" id="generate" class="btn btn-primary">Generar</button>
             </div>
         </div>
     </div>

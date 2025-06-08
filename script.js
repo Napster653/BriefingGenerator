@@ -118,3 +118,48 @@ document.getElementById('mission_name').addEventListener('input', function (even
         document.getElementById('mission_map').value = parts[1].trim();
     }
 });
+
+document.getElementById('add_section_button').addEventListener('click', function ()
+{
+    briefing_sections = document.getElementById('briefing_sections');
+    add_briefing_section(briefing_sections, '');
+});
+
+function add_briefing_section(briefing_sections, section_name)
+{
+    if (!section_name || section_name.trim() === '')
+        section_name = 'Nueva Sección';
+
+    // Create a new section with the given name
+    briefing_sections.innerHTML += `
+        <div class="col-12 my-2">
+            <div class="input-group">
+                <span class="input-group-text" style="border-bottom-left-radius: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-horizontal" viewBox="0 0 16 16">
+                        <path d="M2 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                    </svg>
+                </span>
+                <input type="text" class="form-control" value="${section_name}">
+                <button class=" delete-button delete-button" type="button" style="border-bottom-right-radius: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                    </svg>
+                </button>
+            </div>
+            <textarea class="form-control" rows="3" style="border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;"></textarea>
+        </div>
+    `;
+}
+
+function add_event_listeners_to_delete_buttons()
+{
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function (event)
+        {
+            event.target.closest('.col-12').remove();
+        });
+    });
+}
+
+add_event_listeners_to_delete_buttons();
