@@ -123,7 +123,6 @@ document.getElementById('add_section_button').addEventListener('click', function
 {
     briefing_sections = document.getElementById('briefing_sections');
     add_briefing_section(briefing_sections, '');
-    add_event_listeners_to_delete_buttons();
 });
 
 function add_briefing_section(briefing_sections, section_name)
@@ -135,7 +134,7 @@ function add_briefing_section(briefing_sections, section_name)
     briefing_sections.innerHTML += `
         <div class="col-12 my-2">
             <div class="input-group">
-                <span class="input-group-text" style="border-bottom-left-radius: 0;">
+                <span class="input-group-text handle" style="border-bottom-left-radius: 0;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-horizontal" viewBox="0 0 16 16">
                         <path d="M2 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                     </svg>
@@ -150,12 +149,10 @@ function add_briefing_section(briefing_sections, section_name)
             <textarea class="form-control" rows="3" style="border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;"></textarea>
         </div>
     `;
-}
-
-function add_event_listeners_to_delete_buttons()
-{
-    const deleteButtons = document.querySelectorAll('.delete-button');
-    deleteButtons.forEach(button => {
+    // Add event listener to the delete button
+    const deleteButtons = briefing_sections.querySelectorAll('.delete-button');
+    deleteButtons.forEach(button =>
+    {
         button.addEventListener('click', function (event)
         {
             event.target.closest('.col-12').remove();
@@ -163,4 +160,20 @@ function add_event_listeners_to_delete_buttons()
     });
 }
 
-add_event_listeners_to_delete_buttons();
+
+
+document.addEventListener('DOMContentLoaded', () =>
+{
+    briefing_sections = document.getElementById('briefing_sections');
+    add_briefing_section(briefing_sections, 'Situación');
+    add_briefing_section(briefing_sections, 'Misión');
+    add_briefing_section(briefing_sections, 'Soporte y medios');
+    add_briefing_section(briefing_sections, 'Fuerza Hostil');
+    add_briefing_section(briefing_sections, 'Clima');
+    add_briefing_section(briefing_sections, 'Notas del editor');
+    Sortable.create(document.getElementById('briefing_sections'), {
+        animation: 150,
+        handle: '.handle',
+        ghostClass: 'sortable-ghost',
+    });
+});
