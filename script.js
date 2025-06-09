@@ -119,11 +119,6 @@ document.getElementById('mission_name').addEventListener('input', function (even
     }
 });
 
-document.getElementById('add_section_button').addEventListener('click', function ()
-{
-    briefing_sections = document.getElementById('briefing_sections');
-    add_briefing_section(briefing_sections, '');
-});
 
 function add_briefing_section(briefing_sections, section_name)
 {
@@ -147,33 +142,116 @@ function add_briefing_section(briefing_sections, section_name)
                 </button>
             </div>
             <textarea class="form-control" rows="3" style="border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;"></textarea>
-        </div>
-    `;
-    // Add event listener to the delete button
-    const deleteButtons = briefing_sections.querySelectorAll('.delete-button');
-    deleteButtons.forEach(button =>
-    {
-        button.addEventListener('click', function (event)
-        {
-            event.target.closest('.col-12').remove();
-        });
-    });
+        </div>`;
 }
 
+function add_squad(orbat, squad_name)
+{
+    if (!squad_name || squad_name.trim() === '')
+        squad_name = 'Nueva Escuadra';
 
+    // Create a new squad with the given name
+    orbat.innerHTML += `
+        <div class="col-2 m-2">
+            <div class="input-group">
+                <span class="input-group-text handle-squads" style="border-bottom-left-radius: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-vertical" viewBox="0 0 16 16">
+                        <path d="M7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                    </svg>
+                </span>
+                <input type="text" class="form-control" value="${squad_name}">
+                <button class="btn btn-success add_slot_button" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
+                        <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z" />
+                    </svg>
+                </button>
+                <button class="btn btn-danger delete-squad-button" type="button" style="border-bottom-right-radius: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                    </svg>
+                </button>
+            </div>
+            <div class="slots-list">
+            </div>
+        </div>`;
+}
+
+function add_slot(slots_list, slot_name)
+{
+    if (!slot_name || slot_name.trim() === '')
+        slot_name = 'Nuevo Slot';
+
+    // Create a new slot with the given name
+    slots_list.innerHTML += `
+        <div class="input-group">
+            <span class="input-group-text handle-slots border border-top-0" style="border-radius: 0;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-horizontal" viewBox="0 0 16 16">
+                    <path d="M2 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                </svg>
+            </span>
+            <input type="text" class="form-control border border-top-0" value="${slot_name}">
+            <button class="btn btn-secondary delete-slot-button border-top-0" type="button" style="border-radius: 0;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                </svg>
+            </button>
+        </div>`;
+}
 
 document.addEventListener('DOMContentLoaded', () =>
 {
     briefing_sections = document.getElementById('briefing_sections');
+    orbat = document.getElementById('orbat');
+
     add_briefing_section(briefing_sections, 'Situación');
     add_briefing_section(briefing_sections, 'Misión');
     add_briefing_section(briefing_sections, 'Soporte y medios');
     add_briefing_section(briefing_sections, 'Fuerza Hostil');
     add_briefing_section(briefing_sections, 'Clima');
     add_briefing_section(briefing_sections, 'Notas del editor');
+
     Sortable.create(document.getElementById('briefing_sections'), {
         animation: 150,
         handle: '.handle',
         ghostClass: 'sortable-ghost',
+    });
+    Sortable.create(document.getElementById('orbat'), {
+        animation: 150,
+        handle: '.handle-squads',
+        ghostClass: 'sortable-ghost',
+    });
+    document.querySelectorAll('.slots-list').forEach(slots_list =>
+    {
+        // Get the parent input-group div and add a sortable to it
+        Sortable.create(slots_list, {
+            animation: 150,
+            handle: '.handle-slots',
+            ghostClass: 'sortable-ghost',
+        });
+    });
+
+    briefing_sections.addEventListener('click', function (event)
+    {
+        if (event.target.closest('.delete-button'))
+            event.target.closest('.col-12').remove();
+    });
+    orbat.addEventListener('click', function (event)
+    {
+        if (event.target.closest('.delete-squad-button'))
+            event.target.closest('.col-2').remove();
+        if (event.target.closest('.delete-slot-button'))
+            event.target.closest('.input-group').remove();
+        if (event.target.closest('.add_slot_button'))
+            add_slot(event.target.closest('.col-2').querySelector('.slots-list'), 'Nuevo Slot');
+    });
+
+    document.getElementById('add_section_button').addEventListener('click', function ()
+    {
+        add_briefing_section(briefing_sections, 'Nueva Sección');
+    });
+    document.getElementById('add_squad_button').addEventListener('click', function ()
+    {
+        add_squad(orbat, 'Nueva Escuadra');
     });
 });
