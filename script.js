@@ -154,7 +154,7 @@ function add_squad(orbat, squad_name)
 
     // Create a new squad with the given name
     orbat.innerHTML += `
-        <div class="col-2 m-2">
+        <div class="col-2">
             <div class="input-group">
                 <span class="input-group-text handle-squads" style="border-bottom-left-radius: 0;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-vertical" viewBox="0 0 16 16">
@@ -177,6 +177,17 @@ function add_squad(orbat, squad_name)
             <div class="slots-list">
             </div>
         </div>`;
+
+    document.querySelectorAll('.slots-list').forEach(slots_list =>
+    {
+        // Get the parent input-group div and add a sortable to it
+        Sortable.create(slots_list, {
+            animation: 150,
+            handle: '.handle-slots',
+            ghostClass: 'sortable-ghost',
+        });
+    });
+
 }
 
 function add_slot(slots_list, slot_name)
@@ -234,15 +245,6 @@ document.addEventListener('DOMContentLoaded', () =>
         animation: 150,
         handle: '.handle-squads',
         ghostClass: 'sortable-ghost',
-    });
-    document.querySelectorAll('.slots-list').forEach(slots_list =>
-    {
-        // Get the parent input-group div and add a sortable to it
-        Sortable.create(slots_list, {
-            animation: 150,
-            handle: '.handle-slots',
-            ghostClass: 'sortable-ghost',
-        });
     });
 
     // Button event listeners
