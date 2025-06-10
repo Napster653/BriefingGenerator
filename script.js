@@ -1,3 +1,5 @@
+let currentSlotTarget = null;
+
 document.getElementById('generate').addEventListener('click', function ()
 {
     const mission_name = document.getElementById('mission_name').value;
@@ -190,13 +192,25 @@ function add_slot(slots_list, slot_name)
                     <path d="M2 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                 </svg>
             </span>
-            <input type="text" class="form-control border border-top-0" value="${slot_name}">
+            <a class="form-control border border-top-0 text-decoration-none" style="cursor: default;" data-bs-toggle="modal" data-bs-target="#slotsModal">
+                ${slot_name}
+            </a>
             <button class="btn btn-secondary delete-slot-button border-top-0" type="button" style="border-radius: 0;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                     <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
                 </svg>
             </button>
         </div>`;
+}
+
+function assign_slot(value)
+{
+    if (currentSlotTarget)
+    {
+        currentSlotTarget.textContent = value;
+        // Close the modal
+        bootstrap.Modal.getInstance(document.getElementById('slotsModal')).hide();
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () =>
@@ -244,6 +258,8 @@ document.addEventListener('DOMContentLoaded', () =>
             event.target.closest('.input-group').remove();
         if (event.target.closest('.add_slot_button'))
             add_slot(event.target.closest('.col-2').querySelector('.slots-list'), 'Nuevo Slot');
+        if (event.target.closest('.text-decoration-none'))
+            currentSlotTarget = event.target.closest('.text-decoration-none');
     });
 
     document.getElementById('add_section_button').addEventListener('click', function ()
@@ -253,5 +269,40 @@ document.addEventListener('DOMContentLoaded', () =>
     document.getElementById('add_squad_button').addEventListener('click', function ()
     {
         add_squad(orbat, 'Nueva Escuadra');
+    });
+
+    document.querySelectorAll('#slotsModal .list-group-item').forEach(item =>
+    {
+        item.addEventListener('click', function ()
+        {
+            assign_slot(item.firstChild.textContent);
+        });
+    });
+
+    window.addEventListener('keypress', function (event)
+    {
+        // if the key pressed is H, set currentSlotTarget text to the HQ and close modal
+        switch (event.code)
+        {
+            case 'KeyH': assign_slot('HQ'); break;
+            case 'KeyL': assign_slot('Líder de escuadra'); break;
+            case 'KeyE': assign_slot('Líder de equipo'); break;
+            case 'KeyR': assign_slot('RTO'); break;
+            case 'KeyM': assign_slot('Médico'); break;
+            case 'KeyD': assign_slot('Doctor'); break;
+            case 'KeyS': assign_slot('Sanitario'); break;
+            case 'KeyF': assign_slot('Fusilero'); break;
+            case 'KeyG': assign_slot('Granadero'); break;
+            case 'KeyT': assign_slot('Tirador selecto'); break;
+            case 'KeyA': assign_slot('Ametrallador'); break;
+            case 'KeyP': assign_slot('Piloto'); break;
+            default:
+                break;
+        }
+    });
+
+    document.getElementById('slotsModal').addEventListener('hidden.bs.modal', function ()
+    {
+        currentSlotTarget = null;
     });
 });
