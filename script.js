@@ -192,7 +192,7 @@ function add_slot(slots_list, slot_name)
                     <path d="M2 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                 </svg>
             </span>
-            <a class="form-control border border-top-0 text-decoration-none" style="cursor: default;" data-bs-toggle="modal" data-bs-target="#slotsModal">
+            <a class="form-control border border-top-0 text-decoration-none slot" style="cursor: default;" data-bs-toggle="modal" data-bs-target="#slotsModal">
                 ${slot_name}
             </a>
             <button class="btn btn-secondary delete-slot-button border-top-0" type="button" style="border-radius: 0;">
@@ -245,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () =>
         });
     });
 
+    // Button event listeners
     briefing_sections.addEventListener('click', function (event)
     {
         if (event.target.closest('.delete-button'))
@@ -258,8 +259,8 @@ document.addEventListener('DOMContentLoaded', () =>
             event.target.closest('.input-group').remove();
         if (event.target.closest('.add_slot_button'))
             add_slot(event.target.closest('.col-2').querySelector('.slots-list'), 'Nuevo Slot');
-        if (event.target.closest('.text-decoration-none'))
-            currentSlotTarget = event.target.closest('.text-decoration-none');
+        if (event.target.closest('.slot'))
+            currentSlotTarget = event.target.closest('.slot');
     });
 
     document.getElementById('add_section_button').addEventListener('click', function ()
