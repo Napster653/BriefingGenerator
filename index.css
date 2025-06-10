@@ -6,3 +6,11 @@ body {
 .handle {
     cursor: grab;
 }
+
+.handle-squads {
+    cursor: grab;
+}
+
+.handle-slots {
+    cursor: grab;
+}
