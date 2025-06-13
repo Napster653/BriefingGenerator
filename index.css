@@ -14,3 +14,37 @@ body {
 .handle-slots {
     cursor: grab;
 }
+
+.handle-channels {
+    cursor: grab;
+}
+
+.channel-row>.handle-channels {
+    min-width: 40px;
+    max-width: 40px;
+    flex: 0 0 40px;
+    height: 38px;
+}
+
+.channel-row>input[type="text"] {
+    min-width: 160px;
+    max-width: 160px;
+    flex: 0 0 160px;
+}
+
+.channel-row>select {
+    min-width: 160px;
+    max-width: 160px;
+    flex: 0 0 160px;
+}
+
+.channel-row>span {
+    min-width: 70px;
+    max-width: 70px;
+    flex: 0 0 70px;
+}
+.channel-row>input[type="number"] {
+    min-width: 80px;
+    max-width: 80px;
+    flex: 0 0 80px;
+}
