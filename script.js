@@ -1,6 +1,6 @@
 let currentSlotTarget = null;
 
-document.getElementById('export-button').addEventListener('click', function ()
+document.getElementById('export-button').addEventListener('click', async function ()
 {
     const pbo_name = document.getElementById('pbo_name').value;
     const map_name = document.getElementById('map_name').value;
@@ -102,6 +102,20 @@ document.getElementById('export-button').addEventListener('click', function ()
 
     output += '\n';
     output += `[color=#FF8000][u][b]Addons[/b][/u][/color]\n\n`;
+    const addonLines = addons.split('\n').map(line => line.trim()).filter(Boolean);
+    try
+    {
+        const res = await fetch('https://raw.githubusercontent.com/Napster653/ModPresetMaker/main/index.js');
+        const text = await res.text();
+        const validAddons = text.split('const modListString = `')[1].split('`')[0].split('\n').map(l => l.trim());
+        const invalid = addonLines.filter(line => !validAddons.includes(line));
+        if (invalid.length)
+        {
+            alert(`Addons inválidos:\n\n${invalid.join('\n')}`);
+            return;
+        }
+    }
+    catch (err) { }
     output += `[color=#FFFF00][b]${addons}[/b][/color]\n\n`;
 
     output += `[color=#454545][u][b]Metadatos[/b][/u]\n\n`;
