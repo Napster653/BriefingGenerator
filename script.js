@@ -27,11 +27,12 @@ document.getElementById('export-button').addEventListener('click', async functio
         return;
     }
 
-    output = ''
+    output = 'Títulos para postear (GOP copia el que se vaya a usar):\n';
     if (checkbox_martes) { output += `[size=200][color=#FFFF00][b]MARTES XX/XX 20:00H - ${pretty_name}[/b][/color][/size]\n`; }
     if (checkbox_viernes) { output += `[size=200][color=#FFFF00][b]VIERNES XX/XX 22:30H - ${pretty_name}[/b][/color][/size]\n`; }
     if (checkbox_sabado) { output += `[size=200][color=#FFFF00][b]SÁBADO XX/XX 23:00H - ${pretty_name}[/b][/color][/size]\n`; }
 
+    output += '\nContenido (GOP postea a partir de la siguiente línea):\n';
     output += `[img]${image}[/img]\n\n`;
 
     for (const section of sections)
