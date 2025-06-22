@@ -1,5 +1,185 @@
 let currentSlotTarget = null;
 
+document.getElementById('import-button').addEventListener('click', function ()
+{
+    const input = document.getElementById('bbcode_input').value.split('\n');
+
+    try
+    {
+        // Read titles and content start indexes
+        const titles_start_index = input.indexOf('Títulos para postear (GOP copia el que se vaya a usar):');
+        const content_start_index = input.indexOf('Contenido (GOP postea a partir de la siguiente línea):');
+
+        // Read section headers and ORBAT, channels, addons, and metadata headers
+        var section_headers = [];
+        var orbat_header;
+        var channels_header;
+        var addons_header;
+        var metadata_header;
+        for (let i = content_start_index + 3; i < input.length; i++)
+        {
+            if (input[i].startsWith('[color=#FF8000][u][b]')) { section_headers.push(i); }
+            else if (input[i] == '[color=#FF8001][u][b]ORBAT[/b][/u][/color]') { orbat_header = i; }
+            else if (input[i] == '[color=#FF8002][u][b]Canales de radio[/b][/u][/color]') { channels_header = i; }
+            else if (input[i] == '[color=#FF8003][u][b]Addons[/b][/u][/color]') { addons_header = i; }
+            else if (input[i] == '[color=#454545][u][b]Metadatos[/b][/u]') { metadata_header = i; }
+        }
+
+        // Fill image from the BBCode
+        const image = input[content_start_index + 1].replace('[img]', '').replace('[/img]', '').trim();
+        document.getElementById('image').value = image;
+
+        // Fill metadata from the BBCode
+        document.getElementById('pbo_name').value = input[metadata_header + 2].split(': ')[1].trim();
+        document.getElementById('map_name').value = input[metadata_header + 3].split(': ')[1].trim();
+        document.getElementById('pretty_name').value = input[metadata_header + 4].split(': ')[1].trim().toUpperCase();
+        document.getElementById('checkbox_martes').checked = input[metadata_header + 5].split(': ')[1].trim() === 'Sí';
+        document.getElementById('checkbox_viernes').checked = input[metadata_header + 6].split(': ')[1].trim() === 'Sí';
+        document.getElementById('checkbox_sabado').checked = input[metadata_header + 7].split(': ')[1].trim() === 'Sí';
+        document.getElementById('checkbox_respawn').checked = input[metadata_header + 8].split(': ')[1].trim() === 'Sí';
+        document.getElementById('checkbox_jip').checked = input[metadata_header + 9].split(': ')[1].trim() === 'Sí';
+        document.getElementById('checkbox_persistente').checked = input[metadata_header + 10].split(': ')[1].trim() === 'Sí';
+        document.getElementById('checkbox_academia').checked = input[metadata_header + 11].split(': ')[1].trim() === 'Sí';
+        document.getElementById('checkbox_maniobra').checked = input[metadata_header + 12].split(': ')[1].trim() === 'Sí';
+        document.getElementById('checkbox_ocap').checked = input[metadata_header + 13].split(': ')[1].trim() === 'Sí';
+
+        // Remove existing sections, squads, and channels
+        document.getElementById('sections').innerHTML = '';
+        document.getElementById('squads').innerHTML = '';
+        document.getElementById('channels').innerHTML = '';
+
+        // Fill briefing sections
+        for (let i = 0; i < section_headers.length; i++)
+        {
+            const start = section_headers[i];
+            const end = (i < section_headers.length - 1) ? section_headers[i + 1] : orbat_header;
+            const title = input[start].replace('[color=#FF8000][u][b]', '').replace('[/b][/u][/color]', '').trim();
+            const content = input.slice(start + 2, end - 1).join('\n').trim();
+            add_section(document.getElementById('sections'), title, content);
+        }
+
+        // Read ORBAT Squad list
+        let squads = [];
+        for (let i = orbat_header + 2; i < channels_header - 1; i++)
+        {
+            const line = input[i].trim();
+            if (line.startsWith('[color=#80BFFF][b]'))
+            {
+                if (line.includes('[color=#FFFF40][b]'))
+                {
+                    const squadSplit = line.split('[color=#FFFF40][b]');
+                    let squadName = squadSplit[0].replace('[color=#80BFFF][b]', '').replace('[/b][/color]', '').trim();
+                    let unitName = squadSplit[1].replace('[/b][/color]', '').trim();
+                    squads.push({ name: squadName, unit: unitName, slots: [] });
+                }
+                else
+                {
+                    let squadName = line.replace('[color=#80BFFF][b]', '').replace('[/b][/color]', '').trim();
+                    squads.push({ name: squadName, unit: '', slots: [] });
+                }
+            }
+            else if (line.startsWith('[rol]'))
+            {
+                const slotName = line.split(' (')[0].replace('[rol]', '').trim();
+                squads[squads.length - 1].slots.push(slotName);
+            }
+        }
+
+        // Fill squads
+        for (const squad of squads)
+        {
+            const squadContainer = document.getElementById('squads');
+            add_squad(squadContainer, squad.name, squad.unit);
+            const slotsList = squadContainer.lastElementChild.querySelector('.slots-list');
+            for (const slot of squad.slots)
+            {
+                add_slot(slotsList, slot);
+            }
+        }
+
+        // Read Channels
+        const channelContainer = document.getElementById('channels');
+        for (let i = channels_header + 2; i < addons_header - 1; i++)
+        {
+            const line = input[i].trim();
+            if (line.startsWith('[color=#FFFF00][b]'))
+            {
+                let channelName = line.split('[/b][/color]')[0].replace('[color=#FFFF00][b]', '').trim();
+                let radioDetails = line.split('[color=#FFFFFF]')[1].replace('[/color]', '').trim();
+                let attrib1 = 1;
+                let attrib2 = 1;
+                if (radioDetails.includes('AN/PRC-343'))
+                {
+                    radioType = 'AN/PRC-343';
+                    attrib1 = radioDetails.split('Bloque ')[1].split(' Canal ')[0].trim();
+                    attrib2 = radioDetails.split('Canal ')[1].split(' AN/PRC-343')[0].trim();
+                    add_channel(channelContainer, channelName, radioType, attrib1, attrib2);
+                }
+                else if (radioDetails.includes('AN/PRC-148'))
+                {
+                    radioType = 'AN/PRC-148';
+                    attrib1 = radioDetails.split('Grupo ')[1].split(' Canal ')[0].trim();
+                    attrib2 = radioDetails.split('Canal ')[1].split(' AN/PRC-148')[0].trim();
+                    add_channel(channelContainer, channelName, radioType, attrib1, attrib2);
+                }
+                else if (radioDetails.includes('AN/PRC-152'))
+                {
+                    radioType = 'AN/PRC-152';
+                    attrib1 = radioDetails.split('Canal ')[1].split(' AN/PRC-152')[0].trim();
+                    add_channel(channelContainer, channelName, radioType, attrib1, attrib2);
+                }
+                else if (radioDetails.includes('AN/PRC-117F'))
+                {
+                    radioType = 'AN/PRC-117F';
+                    attrib1 = radioDetails.split('Canal ')[1].split(' AN/PRC-117F')[0].trim();
+                    add_channel(channelContainer, channelName, radioType, attrib1, attrib2);
+                }
+                else if (radioDetails.includes('AN/PRC-77'))
+                {
+                    radioType = 'AN/PRC-77';
+                    attrib1 = radioDetails.split('Frecuencia ')[1].split('.')[0].trim();
+                    attrib2 = radioDetails.split('Frecuencia ')[1].split('.')[1].split(' MHz')[0].trim();
+                    add_channel(channelContainer, channelName, radioType, attrib1, attrib2);
+                }
+                else if (radioDetails.includes('SEM 52 SL'))
+                {
+                    radioType = 'SEM 52 SL';
+                    attrib1 = radioDetails.split('Frecuencia ')[1].split('.')[0].trim();
+                    attrib2 = radioDetails.split('Frecuencia ')[1].split('.')[1].split(' MHz')[0].trim();
+                    add_channel(channelContainer, channelName, radioType, attrib1, attrib2);
+                }
+                else if (radioDetails.includes('SEM 70'))
+                {
+                    radioType = 'SEM 70';
+                    attrib1 = radioDetails.split('Frecuencia ')[1].split('.')[0].trim();
+                    attrib2 = radioDetails.split('Frecuencia ')[1].split('.')[1].split(' MHz')[0].trim();
+                    add_channel(channelContainer, channelName, radioType, attrib1, attrib2);
+                }
+                else if (radioDetails.includes('BF 888S'))
+                {
+                    radioType = 'BF 888S';
+                    attrib1 = radioDetails.split('Canal ')[1].split(' BF 888S')[0].trim();
+                    add_channel(channelContainer, channelName, radioType, attrib1);
+                }
+            }
+        }
+
+        // Fill Addons
+        const addonsContainer = document.getElementById('addons');
+        const addonLines = [];
+        for (let i = addons_header + 2; i < metadata_header - 1; i++)
+        {
+            const addon = input[i].replace('[color=#FFFF00][b]', '').replace('[/b][/color]', '').trim();
+            addonLines.push(addon);
+        }
+        addonsContainer.value = addonLines.join('\n');
+    }
+    catch (error)
+    {
+        console.error('Error al procesar el BBCode:', error);
+    }
+});
+
 document.getElementById('export-button').addEventListener('click', async function ()
 {
     const pbo_name = document.getElementById('pbo_name').value;
@@ -45,7 +225,7 @@ document.getElementById('export-button').addEventListener('click', async functio
         output += `${content}\n\n`;
     }
 
-    output += `[color=#FF8000][u][b]ORBAT[/b][/u][/color]\n\n`;
+    output += `[color=#FF8001][u][b]ORBAT[/b][/u][/color]\n\n`;
     let slot_code = 0;
     for (const squad of squads)
     {
@@ -65,7 +245,7 @@ document.getElementById('export-button').addEventListener('click', async functio
         output += '\n';
     }
 
-    output += `[color=#FF8000][u][b]Canales de radio[/b][/u][/color]\n\n`;
+    output += `[color=#FF8002][u][b]Canales de radio[/b][/u][/color]\n\n`;
     for (const channel of channels)
     {
         const channelName = channel.querySelector('input[type="text"]').value.trim();
@@ -102,7 +282,7 @@ document.getElementById('export-button').addEventListener('click', async functio
     }
 
     output += '\n';
-    output += `[color=#FF8000][u][b]Addons[/b][/u][/color]\n\n`;
+    output += `[color=#FF8003][u][b]Addons[/b][/u][/color]\n\n`;
     const addonLines = addons.split('\n').map(line => line.trim()).filter(Boolean);
     try
     {
@@ -134,84 +314,8 @@ document.getElementById('export-button').addEventListener('click', async functio
     output += `OCAP: ${checkbox_ocap ? 'Sí' : 'No'}\n`;
     output += `Slots: ${slot_code}\n`;
 
-    // output += mission_name.trim()
-    // output += '\n\n';
-    // if (mission_type == 'martes')
-    //     output += `[size=200][color=#FFFF00][b]${mission_pretty_name.trim()} XX/XX MARTES 20:00H (Peninsular)[/b][/color][/size]\n\n`;
-    // else if (mission_type == 'viernes')
-    //     output += `[size=200][color=#FFFF00][b]${mission_pretty_name.trim()} XX/XX VIERNES 22:30H (Peninsular)[/b][/color][/size]\n\n`;
-    // else
-    //     output += `[size=200][color=#FFFF00][b]${mission_pretty_name.trim()} XX/XX DIA_DE_LA_SEMANA XX:XXH (Peninsular)[/b][/color][/size]\n\n`;
-    // output += `[img]${mission_image}[/img]\n\n`;
-    // output += `[color=#FF8000][u][b]Situación[/b][/u][/color]\n\n[b]${mission_situation_bold}[/b]\n\n${mission_situation}\n\n`;
-    // output += `[color=#FF8000][u][b]Misión[/b][/u][/color]\n\n${mission_mission}\n\n`;
-    // output += `[color=#FF8000][u][b]Fuerza Hostil[/b][/u][/color]\n\n${mission_hostiles}\n\n`;
-    // output += `[color=#FF8000][u][b]Soporte y Medios[/b][/u][/color]\n\n${mission_allies}\n\n`;
-    // output += `[color=#FF8000][u][b]Clima[/b][/u][/color]\n\n${mission_weather}\n\n`;
-    // output += `[color=#FF8000][u][b]ACE[/b][/u][/color]\n\n${mission_ace}\n\n`;
-    // output += `[color=#FF8000][u][b]Notas del editor[/b][/u][/color]\n\n${mission_notes}\n\n`;
-    // output += `[color=#FF8000][u][b]Canales de Radio[/b][/u][/color]\n\n[color=#FFFFFF][b]${mission_radio_long}[/b][/color]\n[color=#FFFF40][b]${mission_radio_short}[/b][/color]\n\n`;
-    // output += '---\n\n';
-    // output += `Se dispone de ${mission_total_slots} slots\n`;
-    // if (mission_jip)
-    //     output += 'La partida es Join in progress y ';
-    // else
-    //     output += 'La partida no es Join in progress y ';
-    // if (mission_respawn)
-    //     output += 'hay respawn ';
-    // else
-    //     output += 'no hay respawn ';
-    // if (mission_jip)
-    //     output += ':jip: ';
-    // else
-    //     output += ':nojip: ';
-    // if (mission_respawn)
-    //     output += '\n\n';
-    // else
-    //     output += ':norespawn:\n\n';
-    // output += `[color=#FFFF40][b]${mission_unit_name}[/b][/color]\n\n`;
-    // let lines = mission_orbat.split('\n');
-    // let emptyLineMarker = true;
-    // for (let i = 0; i < lines.length; i++)
-    // {
-    //     if (lines[i].trim() == '')
-    //     {
-    //         emptyLineMarker = true;
-    //         output += '\n';
-    //         continue;
-    //     }
-    //     if (i === 0 || emptyLineMarker)
-    //     {
-    //         output += `[color=#80BFFF][b]${lines[i]}[/b][/color]\n`
-    //         emptyLineMarker = false;
-    //     }
-    //     else
-    //     {
-    //         output += `[rol]${lines[i]}[b][color=#80BFFF][slot][/slot][/color][/b][/rol]\n`
-    //     }
-    // }
-    // output += '\n---\n\n'
-    // output += `[b]Addons necesarios:[/b][color=#FFFF00][b]\n${mission_addons}[/b][/color]\n\n`
-    // output += '---\n\n'
-    // output += `${mission_name}\n`
-    // output += `${mission_map}\n`
-    // output += `${mission_hcs} HCs\n`
-    // output += `${mission_total_slots} slots\n`
-    // if (mission_jip)
-    //     output += `[color=#00FF00]JIP[/color]\n`
-    // else
-    //     output += `[color=#FF0000]NO JIP[/color]\n`
-    // if (mission_respawn)
-    //     output += `[color=#00FF00]RESPAWN[/color]\n`
-    // else
-    //     output += `[color=#FF0000]NO RESPAWN[/color]\n`
-    // if (mission_ocap)
-    //     output += `[color=#00FF00]OCAP[/color]\n`
-    // else
-    //     output += `[color=#FF0000]NO OCAP[/color]\n`
-    // output += mission_gop_notes
-    // output += '\n\n';
-    // output += '[b]Al reservar slot aceptamos la normativa: [/b]https://squadalpha.es/normativa/'
+    output += `[/color]\n\n`;
+    output += '[b]Al reservar slot aceptamos la normativa: [/b]https://squadalpha.es/normativa/'
 
     document.getElementById('output-title').value = pretty_name;
     document.getElementById('output-content').value = output
@@ -232,7 +336,7 @@ document.getElementById('pbo_name').addEventListener('input', function (event)
 });
 
 
-function add_section(container)
+function add_section(container, title = '', content = '')
 {
     const wrapper = document.createElement('div');
     wrapper.className = 'col-12 my-2 section';
@@ -243,18 +347,18 @@ function add_section(container)
                     <path d="M2 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                 </svg>
             </span>
-            <input type="text" class="form-control" placeholder="Título de la sección">
+            <input type="text" class="form-control" placeholder="Título de la sección" value="${title}">
             <button class="btn btn-danger delete-section-button" type="button" style="border-bottom-right-radius: 0;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                     <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
                 </svg>
             </button>
         </div>
-        <textarea class="form-control" rows="3" style="border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;" placeholder="Contenido"></textarea>`;
+        <textarea class="form-control" rows="3" style="border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;" placeholder="Contenido">${content}</textarea>`;
     container.appendChild(wrapper);
 }
 
-function add_squad(container)
+function add_squad(container, name = '', unit = '')
 {
     const wrapper = document.createElement('div');
     wrapper.className = 'col-3 mt-4 squad';
@@ -265,7 +369,7 @@ function add_squad(container)
                     <path d="M7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
                 </svg>
             </span>
-            <input type="text" class="form-control" placeholder="Nombre">
+            <input type="text" class="form-control" placeholder="Nombre" value="${name}">
             <button class="btn btn-success add_slot_button" type="button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
                     <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
@@ -279,7 +383,7 @@ function add_squad(container)
             </button>
         </div>
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Unidad (Opcional)" style="border-top: 0; border-radius: 0;">
+            <input type="text" class="form-control" placeholder="Unidad (Opcional)" style="border-top: 0; border-radius: 0;" value="${unit}">
         </div>
         <div class="slots-list">
         </div>`;
@@ -297,7 +401,7 @@ function add_squad(container)
 
 }
 
-function add_slot(container)
+function add_slot(container, name = '')
 {
     const wrapper = document.createElement('div');
     wrapper.className = 'input-group slot';
@@ -308,7 +412,7 @@ function add_slot(container)
             </svg>
         </span>
         <a class="form-control border border-top-0 text-decoration-none slot-name" style="cursor: default;" data-bs-toggle="modal" data-bs-target="#slotsModal">
-            Nuevo Slot
+            ${name}
         </a>
         <button class="btn btn-secondary delete-slot-button border-top-0" type="button" style="border-radius: 0;">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
@@ -318,7 +422,7 @@ function add_slot(container)
     container.appendChild(wrapper);
 }
 
-function add_channel(container)
+function add_channel(container, name = '', radioType = 'AN/PRC-343', param1 = 1, param2 = 1)
 {
     const wrapper = document.createElement('div');
     wrapper.className = 'col-12 my-1 channel';
@@ -334,29 +438,25 @@ function add_channel(container)
                     <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
                 </svg>
             </button>
-            <input type="text" class="form-control" placeholder="Nombre">
+            <input type="text" class="form-control" placeholder="Nombre" value="${name}">
             <select class="form-select radio-dropdown">
-                <option value="AN/PRC-343" selected>AN/PRC-343</option>
-                <option value="AN/PRC-148">AN/PRC-148</option>
-                <option value="AN/PRC-152">AN/PRC-152</option>
-                <option value="AN/PRC-117F">AN/PRC-117F</option>
-                <option value="AN/PRC-77">AN/PRC-77</option>
-                <option value="SEM 52 SL">SEM 52 SL</option>
-                <option value="SEM 70">SEM 70</option>
-                <option value="BF 888S">BF 888S</option>
+                <option value="AN/PRC-343" ${radioType === 'AN/PRC-343' ? 'selected' : ''}>AN/PRC-343</option>
+                <option value="AN/PRC-148" ${radioType === 'AN/PRC-148' ? 'selected' : ''}>AN/PRC-148</option>
+                <option value="AN/PRC-152" ${radioType === 'AN/PRC-152' ? 'selected' : ''}>AN/PRC-152</option>
+                <option value="AN/PRC-117F" ${radioType === 'AN/PRC-117F' ? 'selected' : ''}>AN/PRC-117F</option>
+                <option value="AN/PRC-77" ${radioType === 'AN/PRC-77' ? 'selected' : ''}>AN/PRC-77</option>
+                <option value="SEM 52 SL" ${radioType === 'SEM 52 SL' ? 'selected' : ''}>SEM 52 SL</option>
+                <option value="SEM 70" ${radioType === 'SEM 70' ? 'selected' : ''}>SEM 70</option>
+                <option value="BF 888S" ${radioType === 'BF 888S' ? 'selected' : ''}>BF 888S</option>
             </select>
-            <span class="input-group-text">Bloque</span>
-            <input type="number" class="form-control" value="1">
-            <span class="input-group-text">Canal</span>
-            <input type="number" class="form-control" value="1">
         </div>`;
     container.appendChild(wrapper);
+    handle_radio_dropdown_change(wrapper.querySelector('.radio-dropdown'), param1, param2);
 }
 
-function handle_radio_dropdown_change(event)
+function handle_radio_dropdown_change(select, param1, param2)
 {
     // Delete all siblings after the radio-dropdown element
-    const select = event.target;
     const parent = select.parentElement;
 
     // Remove all siblings after the dropdown
@@ -369,57 +469,57 @@ function handle_radio_dropdown_change(event)
     }
 
     // Add new input fields depending on the selected radio type
-    switch (event.target.value)
+    switch (select.value)
     {
         case 'AN/PRC-343':
             select.insertAdjacentHTML('afterend', `
                 <span class="input-group-text">Bloque</span>
-                <input type="number" class="form-control" value="1" min="1" max="16" step="1">
+                <input type="number" class="form-control" value="${param1}" min="1" max="16" step="1">
                 <span class="input-group-text">Canal</span>
-                <input type="number" class="form-control" value="1" min="1" max="16" step="1">`);
+                <input type="number" class="form-control" value="${param2}" min="1" max="16" step="1">`);
             break;
         case 'AN/PRC-148':
             select.insertAdjacentHTML('afterend', `
                 <span class="input-group-text">Grupo</span>
-                <input type="number" class="form-control" value="1" min="1" max="2" step="1">
+                <input type="number" class="form-control" value="${param1}" min="1" max="2" step="1">
                 <span class="input-group-text">Canal</span>
-                <input type="number" class="form-control" value="1" min="1" max="16" step="1">`);
+                <input type="number" class="form-control" value="${param2}" min="1" max="16" step="1">`);
             break;
         case 'AN/PRC-152':
             select.insertAdjacentHTML('afterend', `
                 <span class="input-group-text">Canal</span>
-                <input type="number" class="form-control" value="1" min="1" max="99" step="1">`);
+                <input type="number" class="form-control" value="${param1}" min="1" max="99" step="1">`);
             break;
         case 'AN/PRC-117F':
             select.insertAdjacentHTML('afterend', `
                 <span class="input-group-text">Canal</span>
-                <input type="number" class="form-control" value="1" min="1" max="99" step="1">`);
+                <input type="number" class="form-control" value="${param1}" min="1" max="99" step="1">`);
             break;
         case 'AN/PRC-77':
             select.insertAdjacentHTML('afterend', `
                 <span class="input-group-text">MHz</span>
-                <input type="number" class="form-control" value="30" min="30" max="52" step="1">
+                <input type="number" class="form-control" value="${param1}" min="30" max="52" step="1">
                 <span class="input-group-text">KHz</span>
-                <input type="number" class="form-control" value="0" min="0" max="95" step="5">`);
+                <input type="number" class="form-control" value="${param2}" min="0" max="95" step="5">`);
             break;
         case 'SEM 52 SL':
             select.insertAdjacentHTML('afterend', `
                 <span class="input-group-text">MHz</span>
-                <input type="number" class="form-control" value="46" min="46" max="65" step="1">
+                <input type="number" class="form-control" value="${param1}" min="46" max="65" step="1">
                 <span class="input-group-text">KHz</span>
-                <input type="number" class="form-control" value="0" min="0" max="975" step="25">`);
+                <input type="number" class="form-control" value="${param2}" min="0" max="975" step="25">`);
             break;
         case 'SEM 70':
             select.insertAdjacentHTML('afterend', `
                 <span class="input-group-text">MHz</span>
-                <input type="number" class="form-control" value="30" min="30" max="79" step="1">
+                <input type="number" class="form-control" value="${param1}" min="30" max="79" step="1">
                 <span class="input-group-text">KHz</span>
-                <input type="number" class="form-control" value="0" min="0" max="975" step="25">`);
+                <input type="number" class="form-control" value="${param2}" min="0" max="975" step="25">`);
             break;
         case 'BF 888S':
             select.insertAdjacentHTML('afterend', `
                 <span class="input-group-text">Canal</span>
-                <input type="number" class="form-control" value="1" min="1" max="16" step="1">`);
+                <input type="number" class="form-control" value="${param1}" min="1" max="16" step="1">`);
             break;
     }
 }
@@ -487,7 +587,7 @@ document.addEventListener('DOMContentLoaded', () =>
     {
         if (event.target.classList.contains('radio-dropdown'))
         {
-            handle_radio_dropdown_change(event);
+            handle_radio_dropdown_change(event.target);
         }
     });
 
