@@ -217,7 +217,7 @@ document.getElementById('export-button').addEventListener('click', async functio
 
     for (const section of sections)
     {
-        const title = section.querySelector('input[type="text"]').value.trim().toLowerCase().replace(/^./, c => c.toUpperCase());
+        const title = section.querySelector('input[type="text"]').value.trim();
         if (!title) { alert('Por favor, completa todos los títulos de las secciones.'); return; }
         const content = section.querySelector('textarea').value.trim();
         if (!content) { alert('Por favor, completa todos los contenidos de las secciones.'); return; }
@@ -361,7 +361,7 @@ function add_section(container, title = '', content = '')
 function add_squad(container, name = '', unit = '')
 {
     const wrapper = document.createElement('div');
-    wrapper.className = 'col-3 mt-4 squad';
+    wrapper.className = 'col-3 my-2 squad';
     wrapper.innerHTML = `
         <div class="input-group">
             <span class="input-group-text handle-squads" style="border-bottom-left-radius: 0;">
