@@ -616,18 +616,32 @@ document.addEventListener('DOMContentLoaded', () =>
     {
         switch (event.code)
         {
-            case 'KeyH': assign_slot('HQ'); break;
-            case 'KeyL': assign_slot('Líder de escuadra'); break;
-            case 'KeyE': assign_slot('Líder de equipo'); break;
-            case 'KeyR': assign_slot('RTO'); break;
-            case 'KeyM': assign_slot('Médico'); break;
+            case 'KeyA': assign_slot('Ametrallador'); break;
+            case 'KeyB': break;
+            case 'KeyC': assign_slot('Copiloto'); break;
             case 'KeyD': assign_slot('Doctor'); break;
-            case 'KeyS': assign_slot('Sanitario'); break;
+            case 'KeyE': assign_slot('EOD'); break;
             case 'KeyF': assign_slot('Fusilero'); break;
             case 'KeyG': assign_slot('Granadero'); break;
-            case 'KeyT': assign_slot('Tirador selecto'); break;
-            case 'KeyA': assign_slot('Ametrallador'); break;
+            case 'KeyH': assign_slot('HQ'); break;
+            case 'KeyI': assign_slot('Ingeniero'); break;
+            case 'KeyJ': assign_slot('JTAC'); break;
+            case 'KeyK': break;
+            case 'KeyL': assign_slot('Líder de escuadra'); break;
+            case 'KeyM': assign_slot('Médico'); break;
+            case 'KeyN': break;
+            case 'KeyO': assign_slot('Operador'); break;
             case 'KeyP': assign_slot('Piloto'); break;
+            case 'KeyQ': assign_slot('Líder de equipo'); break;
+            case 'KeyR': assign_slot('RTO'); break;
+            case 'KeyS': assign_slot('Sanitario'); break;
+            case 'KeyT': assign_slot('Tirador selecto'); break;
+            case 'KeyU': assign_slot('Operador UAV'); break;
+            case 'KeyV': break;
+            case 'KeyW': break;
+            case 'KeyX': assign_slot('Especialista en explosivos'); break;
+            case 'KeyY': assign_slot('Instructor'); break;
+            case 'KeyZ': assign_slot('Alumno'); break;
             default:
                 break;
         }
