@@ -370,6 +370,11 @@ function add_squad(container, name = '', unit = '')
                 </svg>
             </span>
             <input type="text" class="form-control" placeholder="Nombre" value="${name}">
+            <button class="btn btn-primary copy_squad_button" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+                </svg>
+            </button>
             <button class="btn btn-success add_slot_button" type="button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
                     <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
@@ -534,6 +539,12 @@ function assign_slot(value)
     }
 }
 
+function copy_squad(squadElement)
+{
+    const newSquad = squadElement.cloneNode(true);
+    squads.appendChild(newSquad);
+}
+
 document.addEventListener('DOMContentLoaded', () =>
 {
     sections = document.getElementById('sections');
@@ -577,6 +588,8 @@ document.addEventListener('DOMContentLoaded', () =>
             add_slot(event.target.closest('.squad').querySelector('.slots-list'));
         if (event.target.closest('.slot-name'))
             currentSlotTarget = event.target.closest('.slot-name');
+        if (event.target.closest('.copy_squad_button'))
+            copy_squad(event.target.closest('.squad'));
     });
     channels.addEventListener('click', function (event)
     {
