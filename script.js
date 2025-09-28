@@ -267,13 +267,13 @@ document.getElementById('export-button').addEventListener('click', async functio
                 output += `[color=#FFFF00][b]${channelName}[/b][/color] - [color=#FFFFFF]Canal ${radioData[0].value} ${radioType}[/color]\n`;
                 break;
             case 'AN/PRC-77':
-                output += `[color=#FFFF00][b]${channelName}[/b][/color] - [color=#FFFFFF]Frecuencia ${radioData[0].value}.${radioData[0].value} MHz ${radioType}[/color]\n`;
+                output += `[color=#FFFF00][b]${channelName}[/b][/color] - [color=#FFFFFF]Frecuencia ${radioData[0].value}.${radioData[1].value} MHz ${radioType}[/color]\n`;
                 break;
             case 'SEM 52 SL':
-                output += `[color=#FFFF00][b]${channelName}[/b][/color] - [color=#FFFFFF]Frecuencia ${radioData[0].value}.${radioData[0].value} MHz ${radioType}[/color]\n`;
+                output += `[color=#FFFF00][b]${channelName}[/b][/color] - [color=#FFFFFF]Frecuencia ${radioData[0].value}.${radioData[1].value} MHz ${radioType}[/color]\n`;
                 break;
             case 'SEM 70':
-                output += `[color=#FFFF00][b]${channelName}[/b][/color] - [color=#FFFFFF]Frecuencia ${radioData[0].value}.${radioData[0].value} MHz ${radioType}[/color]\n`;
+                output += `[color=#FFFF00][b]${channelName}[/b][/color] - [color=#FFFFFF]Frecuencia ${radioData[0].value}.${radioData[1].value} MHz ${radioType}[/color]\n`;
                 break;
             case 'BF 888S':
                 output += `[color=#FFFF00][b]${channelName}[/b][/color] - [color=#FFFFFF]Canal ${radioData[0].value} ${radioType}[/color]\n`;
