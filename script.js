@@ -630,7 +630,7 @@ document.addEventListener('DOMContentLoaded', () =>
         switch (event.code)
         {
             case 'KeyA': assign_slot('Ametrallador'); break;
-            case 'KeyB': break;
+            case 'KeyB': assign_slot('Breacher'); break;
             case 'KeyC': assign_slot('Copiloto'); break;
             case 'KeyD': assign_slot('Doctor'); break;
             case 'KeyE': assign_slot('EOD'); break;
